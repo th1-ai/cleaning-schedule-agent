@@ -1,0 +1,36 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 {{PMS_API_TOOL}} *)",
+      "Bash({{EMAIL_CLI}} sheets spreadsheets values get *)",
+      "Edit(./runs/**)"
+    ],
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Edit(./AUTONOMY.md)",
+      "Edit(./.claude/**)",
+      "Bash(rm *)",
+      "Bash(curl *)",
+      "Bash(git push *)",
+      "Bash({{EMAIL_CLI}} gmail users messages send *)",
+      "Bash({{EMAIL_CLI}} gmail users drafts send *)",
+      "WebFetch",
+      "WebSearch"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/autonomy_guard.py",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}
